@@ -549,7 +549,7 @@ namespace RoyalCapital_3.Controllers
         }
 
 
-        public string send_SMS_automatically(string mobileNo)
+        private string send_SMS_automatically(string mobileNo)
         {
             Random ran_num = new Random();
             string verification_code = ran_num.Next(100000, 999999).ToString();
@@ -576,7 +576,7 @@ namespace RoyalCapital_3.Controllers
             return response;
         }
 
-        public async Task<string> send_WhatsUp_SMS_automatically(string mobileNo)
+        private async Task<string> send_WhatsUp_SMS_automatically(string mobileNo)
         {
             Random ran_num = new Random();
             string verification_code = ran_num.Next(100000, 999999).ToString();

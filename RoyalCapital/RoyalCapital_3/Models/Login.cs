@@ -9,5 +9,7 @@ namespace RoyalCapital_3.Models
     {
         public string MobileNo { get; set; }
         public string Password { get; set; }
+        public int Version { get; set; }
+        public string rKey { get; set; }
     }
 }

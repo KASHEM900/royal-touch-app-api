@@ -27,7 +27,7 @@ namespace RoyalCapital_3.Models
             using (SqlConnection oConnection = new SqlConnection(SqlConn))
             {
                 oConnection.Open();
-                string query = "SELECT BRANCHNAME,[ADDRESS] FROM T_BRANCHES WHERE BRANCHNAME NOT IN ('Dhaka Ext special','CTG Ext special','WEB','SMS')";
+                string query = "SELECT BRANCHNAME,[ADDRESS] FROM T_BRANCHES WHERE BRANCHNAME IS NOT NULL AND LTRIM(RTRIM(BRANCHNAME)) <> '' AND BRANCHNAME NOT IN ('Dhaka Ext special','CTG Ext special','WEB','SMS') ORDER BY BRANCHNAME ASC";
                 SqlCommand oCommand = new SqlCommand(query, oConnection);
 
                 DataTable oTable = new DataTable();

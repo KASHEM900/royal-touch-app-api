@@ -428,7 +428,7 @@ namespace RoyalCapital_3.Controllers
             return false;
         }
 
-        public int get_branch_code(string rcode)
+        private int get_branch_code(string rcode)
         {
             int branch_code = 0;
             int n;
@@ -579,7 +579,7 @@ namespace RoyalCapital_3.Controllers
             return branch_code;
         }
 
-        public string send_SMS_automatically(string mobileNo, string message)
+        private string send_SMS_automatically(string mobileNo, string message)
         {
             Random ran_num = new Random();
             string verification_code = ran_num.Next(100000, 999999).ToString();

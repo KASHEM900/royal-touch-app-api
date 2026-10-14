@@ -106,7 +106,7 @@ namespace RoyalCapital_3.Controllers
         public IActionResult SetTransactionStatus([FromBody] CDBLBulkReceiveList cDBLBulkReceiveList, string key)
         {
             string decryptedData;
-            int unit_price = 450;
+            int unit_price = 150;
 
             string secretKey = configuration["secret"];
             try

@@ -28,7 +28,7 @@ namespace RoyalCapital_3.Models
             SqlConnection oConnection = new SqlConnection(SqlConn);
             oConnection.Open();
 
-            string query = "SELECT [dbo].[T_ONLINE_BO_AccountHolder].[TRACKINGNO],[RCODE],[ToC],[fFirstName],[fLastName],[fOccupation],[fDoB],[fTitle],[fFName],[fMName],[fAddress],[fCity],[fPostCode],[fDivision],[fCountry],[fMobile],[fTel],[fFax],[fEmail],[fNationality],[fNID],[fTIN],[fSex],[fResidency],[jTitle],[jFirstName],[jLastName],[jOccupation],[jDoB],[jFName],[jMName],[jAddress],[jCity],[jPostCode],[jDivision],[jCountry],[jMobile],[jTel],[jFax],[jEmail],[jNID],[DesireBranch],[IsDirector],[DirectorShare],[T_ONLINE_BO_REG].[pDate],[fIsComplete],[T_ONLINE_BO_REG].[RefarralCode] FROM [dbo].[T_ONLINE_BO_AccountHolder],[dbo].[T_ONLINE_BO_REG] WHERE [dbo].[T_ONLINE_BO_AccountHolder].TRACKINGNO=[dbo].[T_ONLINE_BO_REG].TRACKINGNO AND [dbo].[T_ONLINE_BO_AccountHolder].TRACKINGNO=@id";
+            string query = "SELECT [dbo].[T_ONLINE_BO_AccountHolder].[TRACKINGNO],[RCODE],[ToC],[fFirstName],[fLastName],[fOccupation],[fDoB],[fTitle],[fFName],[fMName],[fAddress],[fCity],[fPostCode],[fDivision],[fCountry],[fMobile],[fTel],[fFax],[fEmail],[fNationality],[fNID],[fTIN],[fSex],[fResidency],[jTitle],[jFirstName],[jLastName],[jOccupation],[jDoB],[jFName],[jMName],[jAddress],[jCity],[jPostCode],[jDivision],[jCountry],[jMobile],[jTel],[jFax],[jEmail],[jNID],[DesireBranch],[IsDirector],[DirectorShare],[T_ONLINE_BO_REG].[pDate],[fIsComplete],[T_ONLINE_BO_REG].[RefarralCode],[fSpouseName] FROM [dbo].[T_ONLINE_BO_AccountHolder],[dbo].[T_ONLINE_BO_REG] WHERE [dbo].[T_ONLINE_BO_AccountHolder].TRACKINGNO=[dbo].[T_ONLINE_BO_REG].TRACKINGNO AND [dbo].[T_ONLINE_BO_AccountHolder].TRACKINGNO=@id";
             SqlCommand oCommand = new SqlCommand(query, oConnection);
             oCommand.Parameters.AddWithValue("@id", id);
 
@@ -41,9 +41,9 @@ namespace RoyalCapital_3.Models
                 acc.Add(new BOOnlineBODetailModel
                 { RCODE = dr["RCODE"].ToString(), ToC = dr["ToC"].ToString(), fFirstName = dr["fFirstName"].ToString(), 
                     fLastName = dr["fLastName"].ToString(), fOccupation = dr["fOccupation"].ToString(),
-                    RefarralCode = dr["RefarralCode"].ToString(), 
+                    RefarralCode = dr["RefarralCode"].ToString(),fSpouseName = dr["fSpouseName"].ToString(),
                     fDoB = (dr["fDoB"] == DBNull.Value ? Convert.ToDateTime("1/1/1900").ToString("dd/MM/yyyy") : Convert.ToDateTime(dr["fDoB"]).ToString("dd/MM/yyyy")), 
-                    fTitle1 = dr["fTitle"].ToString(), fFName = dr["fFName"].ToString(), fMName = dr["fMName"].ToString(), fAddress = dr["fAddress"].ToString(), fCity = dr["fCity"].ToString(), fPostCode = dr["fPostCode"].ToString(), fDivision = dr["fDivision"].ToString(), fCountry = dr["fCountry"].ToString(), fMobile = dr["fMobile"].ToString(), fTel = dr["fTel"].ToString(), fFax = dr["fFax"].ToString(), fEmail = dr["fEmail"].ToString(), fNationality = dr["fNationality"].ToString(), fNID = dr["fNID"].ToString(), fTIN = dr["fTIN"].ToString(), fSex = dr["fSex"].ToString(), fResidency = dr["fResidency"].ToString(), jTitle1 = dr["jTitle"].ToString(), jFastName = dr["jFirstName"].ToString(), jLastName = dr["jLastName"].ToString(), jOccupation = dr["jOccupation"].ToString(), jDoB = (dr["jDoB"] == DBNull.Value ? Convert.ToDateTime("1/1/1900") : Convert.ToDateTime(dr["jDoB"])), jFName = dr["jFName"].ToString(), jMName = dr["jMName"].ToString(), jAddress = dr["jAddress"].ToString(), jCity = dr["jCity"].ToString(), jPostCode = dr["jPostCode"].ToString(), jDivision = dr["jDivision"].ToString(), jCountry = dr["jCountry"].ToString(), jMobile = dr["jMobile"].ToString(), jTel = dr["jTel"].ToString(), jFax = dr["jFax"].ToString(), jEmail = dr["jEmail"].ToString(), jNID = dr["jNID"].ToString(), DesireBranch1 = dr["DesireBranch"].ToString(), IsDirector = dr["IsDirector"].ToString(), DirectorShare = dr["DirectorShare"].ToString() });
+                    fTitle1 = dr["fTitle"].ToString(), fFName = dr["fFName"].ToString(), fMName = dr["fMName"].ToString(), fAddress = dr["fAddress"].ToString(), fCity = dr["fCity"].ToString(), fPostCode = dr["fPostCode"].ToString(), fDivision = dr["fDivision"].ToString(), fCountry = dr["fCountry"].ToString(), fMobile = dr["fMobile"].ToString(), fTel = dr["fTel"].ToString(), fFax = dr["fFax"].ToString(), fEmail = dr["fEmail"].ToString(), fNationality = dr["fNationality"].ToString(), fNID = dr["fNID"].ToString(), fTIN = dr["fTIN"].ToString(), fSex = dr["fSex"].ToString(), fResidency = dr["fResidency"].ToString(), jTitle1 = dr["jTitle"].ToString(), jFastName = dr["jFirstName"].ToString(), jLastName = dr["jLastName"].ToString(), jOccupation = dr["jOccupation"].ToString(), jDoB = (dr["jDoB"] == DBNull.Value ? Convert.ToDateTime("1/1/1900").ToString("dd/MM/yyyy") : Convert.ToDateTime(dr["fDoB"]).ToString("dd/MM/yyyy")), jFName = dr["jFName"].ToString(), jMName = dr["jMName"].ToString(), jAddress = dr["jAddress"].ToString(), jCity = dr["jCity"].ToString(), jPostCode = dr["jPostCode"].ToString(), jDivision = dr["jDivision"].ToString(), jCountry = dr["jCountry"].ToString(), jMobile = dr["jMobile"].ToString(), jTel = dr["jTel"].ToString(), jFax = dr["jFax"].ToString(), jEmail = dr["jEmail"].ToString(), jNID = dr["jNID"].ToString(), DesireBranch = dr["DesireBranch"].ToString(), IsDirector = dr["IsDirector"].ToString(), DirectorShare = dr["DirectorShare"].ToString() });
             }
             return acc.ToList();
         }
@@ -69,6 +69,63 @@ namespace RoyalCapital_3.Models
             {
 
                 acc.Add(new BOOnlineBODetailModel { BANKNAME = dr["BANKNAME"].ToString(), BANKBRANCH = dr["BANKBRANCH"].ToString(), BANKDISTRICT = dr["DISTRICT"].ToString(), ROUTING = dr["ROUTING"].ToString(), AC = dr["AC"].ToString() });
+            }
+            return acc.ToList();
+        }
+
+        public IEnumerable<BOAccountHolderBranchTypeAC> AccBranchInfo(string id)
+        {
+            var acc = new List<BOAccountHolderBranchTypeAC>();
+
+            SqlConnection oConnection = new SqlConnection(SqlConn);
+            oConnection.Open();
+
+
+            string query = @"SELECT A.[DesireBranch], A.[ToC], R.[RefarralCode] FROM dbo.T_ONLINE_BO_AccountHolder A INNER JOIN dbo.T_ONLINE_BO_REG R
+                    ON A.[TRACKINGNO] = R.[TRACKINGNO] WHERE A.[TRACKINGNO] = @id";
+
+            SqlCommand oCommand = new SqlCommand(query, oConnection);
+            oCommand.Parameters.AddWithValue("@id", id);
+
+            DataTable oTable = new DataTable();
+            oTable.Load(oCommand.ExecuteReader(CommandBehavior.CloseConnection));
+
+            foreach (DataRow dr in oTable.Rows)
+            {
+
+                acc.Add(new BOAccountHolderBranchTypeAC { DesireBranch = dr["DesireBranch"].ToString(), ToC = dr["ToC"].ToString(), 
+                    RefarralCode = dr["RefarralCode"].ToString() });
+            }
+            return acc.ToList();
+        }
+
+        public IEnumerable<BoSecondAccHolderAddressModel> AccAddressInfo(string id)
+        {
+            var acc = new List<BoSecondAccHolderAddressModel>();
+
+            SqlConnection oConnection = new SqlConnection(SqlConn);
+            oConnection.Open();
+
+
+            string query = @"SELECT [fAddress],[fPostCode],[fCity],[fDivision],[fCountry] FROM dbo.T_ONLINE_BO_AccountHolder WHERE [TRACKINGNO] = @id";
+
+            SqlCommand oCommand = new SqlCommand(query, oConnection);
+            oCommand.Parameters.AddWithValue("@id", id);
+
+            DataTable oTable = new DataTable();
+            oTable.Load(oCommand.ExecuteReader(CommandBehavior.CloseConnection));
+
+            foreach (DataRow dr in oTable.Rows)
+            {
+
+                acc.Add(new BoSecondAccHolderAddressModel
+                {
+                    fAddress = dr["fAddress"].ToString(),
+                    fPostCode = dr["fPostCode"].ToString(),
+                    fCity = dr["fCity"].ToString(),
+                    fDivision = dr["fDivision"].ToString(),
+                    fCountry = dr["fCountry"].ToString()
+                });
             }
             return acc.ToList();
         }
@@ -408,12 +465,161 @@ namespace RoyalCapital_3.Models
                 return false;
         }
 
+        //     public bool AddAccHolder(BOAccountHolderModel bomodel)
+        //     {
+        //         int i = 0;
+        //         SqlConnection oConnection = new SqlConnection(SqlConn);
+
+        //         string query = "UPDATE T_ONLINE_BO_AccountHolder SET [ToC]=@ToC,[fFirstName]=@fFirstName,[fLastName]=@fLastName,[fOccupation]=@fOccupation,[fDoB]=@fDoB,[fTitle]=@fTitle,[fFName]=@fFName,[fMName]=@fMName,[fAddress]=@fAddress,[fCity]=@fCity,[fPostCode]=@fPostCode,[fDivision]=@fDivision,[fCountry]=@fCountry,[fMobile]=@fMobile,[fTel]=@fTel,[fFax]=@fFax,[fEmail]=@fEmail,[fNationality]=@fNationality,[fNID]=@fNID,[fTIN]=@fTIN,[fSex]=@fSex,[fResidency]=@fResidency,[jTitle]=@jTitle,[jFirstName]=@jFirstName,[jLastName]=@jLastName,[jOccupation]=@jOccupation,[jDoB]=@jDoB,[jFName]=@jFName,[jMName]=@jMName,[jAddress]=@jAddress,[jCity]=@jCity,[jPostCode]=@jPostCode,[jDivision]=@jDivision,[jCountry]=@jCountry,[jMobile]=@jMobile,[jTel]=@jTel,[jFax]=@jFax,[jEmail]=@jEmail,[jNID]=@jNID,[DesireBranch]=@DesireBranch,IsDirector=@IsDirector,[DirectorShare]=@DirectorShare,fIsComplete=@fIsComplete,[fSpouseName]=@fSpouseName WHERE [TRACKINGNO]=@id";
+        //         SqlCommand oCommand = new SqlCommand(query, oConnection);
+        //         oCommand.Parameters.AddWithValue("@id", bomodel.TRACKINGNO.ToString());
+
+
+        //         try
+        //         {
+
+        //             //if (bomodel.TRACKINGNO == null) bomodel.TRACKINGNO = 0;
+        //             if (bomodel.ToC == null) bomodel.ToC = "";
+        //             if (bomodel.fFirstName == null) bomodel.fFirstName = "";
+        //             if (bomodel.fLastName == null) bomodel.fLastName = "";
+        //             if (bomodel.fOccupation == null) bomodel.fOccupation = "";
+        //             if (bomodel.fTitle1 == null) bomodel.fTitle1 = "";
+        //             //if (bomodel.n1DoB == null) bomodel.n1DoB = "";
+        //             if (bomodel.fFName == null) bomodel.fFName = "";
+        //             if (bomodel.fMName == null) bomodel.fMName = "";
+        //             if (bomodel.fAddress == null) bomodel.fAddress = "";
+        //             if (bomodel.fCity == null) bomodel.fCity = "";
+        //             if (bomodel.fPostCode == null) bomodel.fPostCode = "";
+        //             if (bomodel.fDivision == null) bomodel.fDivision = "";
+        //             if (bomodel.fCountry == null) bomodel.fCountry = "";
+        //             if (bomodel.fMobile == null) bomodel.fMobile = "";
+        //             if (bomodel.fTel == null) bomodel.fTel = "";
+        //             if (bomodel.fFax == null) bomodel.fFax = "";
+        //             if (bomodel.fEmail == null) bomodel.fEmail = "";
+        //             if (bomodel.fNationality == null) bomodel.fNationality = "";
+        //             if (bomodel.fNID == null) bomodel.fNID = "";
+        //             if (bomodel.fTIN == null) bomodel.fTIN = "";
+        //             if (bomodel.fSex == null) bomodel.fSex = "";
+        //             if (bomodel.fResidency == null) bomodel.fResidency = "";
+        //             if (bomodel.jFastName == null) bomodel.jFastName = "";
+        //             if (bomodel.jLastName == null) bomodel.jLastName = "";
+        //             if (bomodel.jOccupation == null) bomodel.jOccupation = "";
+        //             if (bomodel.jTitle1 == null) bomodel.jTitle1 = "";
+        //             //if (bomodel.n1DoB == null) bomodel.n1DoB = "";
+        //             if (bomodel.jFName == null) bomodel.jFName = "";
+        //             if (bomodel.jMName == null) bomodel.jMName = "";
+        //             if (bomodel.jAddress == null) bomodel.jAddress = "";
+        //             if (bomodel.jCity == null) bomodel.jCity = "";
+        //             if (bomodel.jPostCode == null) bomodel.jPostCode = "";
+        //             if (bomodel.jDivision == null) bomodel.jDivision = "";
+        //             if (bomodel.jCountry == null) bomodel.jCountry = "";
+        //             if (bomodel.jMobile == null) bomodel.jMobile = "";
+        //             if (bomodel.jTel == null) bomodel.jTel = "";
+        //             if (bomodel.jFax == null) bomodel.jFax = "";
+        //             if (bomodel.jEmail == null) bomodel.jEmail = "";
+        //             if (bomodel.jNID == null) bomodel.jNID = "";
+        //             if (bomodel.IsDirector == null) bomodel.IsDirector = "";
+        //             if (bomodel.DirectorShare == null) bomodel.DirectorShare = "";
+        //             if (bomodel.fSpouseName == null) bomodel.fSpouseName = "";
+
+
+        //             oCommand.Parameters.AddWithValue("@ToC", bomodel.ToC);
+        //             oCommand.Parameters.AddWithValue("@fFirstName", bomodel.fFirstName);
+        //             oCommand.Parameters.AddWithValue("@fLastName", bomodel.fLastName);
+        //             oCommand.Parameters.AddWithValue("@fOccupation", bomodel.fOccupation);
+        //             if (bomodel.fDoB == null) bomodel.fDoB = Convert.ToDateTime("1/1/1900").ToString();
+        //             if (bomodel.DesireBranch == null) bomodel.DesireBranch = "";
+        //             oCommand.Parameters.AddWithValue("@fDoB", DateTime.ParseExact(bomodel.fDoB, "dd/MM/yyyy", null) );
+        //             oCommand.Parameters.AddWithValue("@fTitle", bomodel.fTitle1);
+        //             oCommand.Parameters.AddWithValue("@fFName", bomodel.fFName);
+        //             oCommand.Parameters.AddWithValue("@fMName", bomodel.fMName);
+        //             oCommand.Parameters.AddWithValue("@fAddress", bomodel.fAddress);
+        //             oCommand.Parameters.AddWithValue("@fCity", bomodel.fCity);
+        //             oCommand.Parameters.AddWithValue("@fPostCode", bomodel.fPostCode);
+        //             oCommand.Parameters.AddWithValue("@fDivision", bomodel.fDivision);
+        //             oCommand.Parameters.AddWithValue("@fCountry", bomodel.fCountry);
+        //             oCommand.Parameters.AddWithValue("@fMobile", bomodel.fMobile);
+        //             oCommand.Parameters.AddWithValue("@fTel", bomodel.fTel);
+        //             oCommand.Parameters.AddWithValue("@fFax", bomodel.fFax);
+        //             oCommand.Parameters.AddWithValue("@fEmail", bomodel.fEmail);
+        //             oCommand.Parameters.AddWithValue("@fNationality", bomodel.fNationality);
+        //             oCommand.Parameters.AddWithValue("@fNID", bomodel.fNID);
+        //             oCommand.Parameters.AddWithValue("@fTIN", bomodel.fTIN);
+        //             oCommand.Parameters.AddWithValue("@fSex", bomodel.fSex);
+        //             oCommand.Parameters.AddWithValue("@fResidency", bomodel.fResidency);
+        //             oCommand.Parameters.AddWithValue("@jTitle", bomodel.jTitle1);
+        //             oCommand.Parameters.AddWithValue("@jFirstName", bomodel.jFastName);
+        //             oCommand.Parameters.AddWithValue("@jLastName", bomodel.jLastName);
+        //             oCommand.Parameters.AddWithValue("@jOccupation", bomodel.jOccupation);
+        //             if (bomodel.jDoB == null) bomodel.jDoB = Convert.ToDateTime("1/1/1900");
+        //             oCommand.Parameters.AddWithValue("@jDoB", bomodel.jDoB);
+        //             oCommand.Parameters.AddWithValue("@jFName", bomodel.jFName);
+        //             oCommand.Parameters.AddWithValue("@jMName", bomodel.jMName);
+        //             oCommand.Parameters.AddWithValue("@jAddress", bomodel.jAddress);
+        //             oCommand.Parameters.AddWithValue("@jCity", bomodel.jCity);
+        //             oCommand.Parameters.AddWithValue("@jPostCode", bomodel.jPostCode);
+        //             oCommand.Parameters.AddWithValue("@jDivision", bomodel.jDivision);
+        //             oCommand.Parameters.AddWithValue("@jCountry", bomodel.jCountry);
+        //             oCommand.Parameters.AddWithValue("@jMobile", bomodel.jMobile);
+        //             oCommand.Parameters.AddWithValue("@jTel", bomodel.jTel);
+        //             oCommand.Parameters.AddWithValue("@jFax", bomodel.jFax);
+        //             oCommand.Parameters.AddWithValue("@jEmail", bomodel.jEmail);
+        //             oCommand.Parameters.AddWithValue("@jNID", bomodel.jNID);
+        //             oCommand.Parameters.AddWithValue("@DesireBranch", bomodel.DesireBranch);
+        //             oCommand.Parameters.AddWithValue("@IsDirector", bomodel.IsDirector);
+        //             oCommand.Parameters.AddWithValue("@DirectorShare", bomodel.DirectorShare);
+        //             oCommand.Parameters.AddWithValue("@fIsComplete", 1);
+        //             oCommand.Parameters.AddWithValue("@fSpouseName", bomodel.fSpouseName);
+
+        //             oConnection.Open();
+        //             i = oCommand.ExecuteNonQuery();
+        //             oConnection.Close();
+
+        //}
+        //         catch (Exception ex)
+        //         {
+        //             return false;
+        //         }
+        //         if (i >= 1)
+        //         {
+        //	try
+        //	{
+        //		if (bomodel.RefarralCode == null || bomodel.RefarralCode == "" || bomodel.RefarralCode == "0")
+        //		{
+        //			bomodel.RefarralCode = "0";
+        //		}
+
+        //		SqlConnection oConnection2 = new SqlConnection(SqlConn);
+
+        //		string query2 = "UPDATE T_ONLINE_BO_REG SET RefarralCode='" + bomodel.RefarralCode + "' Where TRACKINGNO='" + bomodel.TRACKINGNO + "'";
+
+        //		SqlCommand oCommand2 = new SqlCommand(query2, oConnection2);
+        //		oConnection2.Open();
+
+        //		oCommand2.ExecuteNonQuery();
+
+        //		oConnection2.Close();
+
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		return false;
+        //	}
+
+        //	return true;
+        //}
+
+        //         else
+        //             return false;
+
+        //     }
+
         public bool AddAccHolder(BOAccountHolderModel bomodel)
         {
             int i = 0;
             SqlConnection oConnection = new SqlConnection(SqlConn);
 
-            string query = "UPDATE T_ONLINE_BO_AccountHolder SET [ToC]=@ToC,[fFirstName]=@fFirstName,[fLastName]=@fLastName,[fOccupation]=@fOccupation,[fDoB]=@fDoB,[fTitle]=@fTitle,[fFName]=@fFName,[fMName]=@fMName,[fAddress]=@fAddress,[fCity]=@fCity,[fPostCode]=@fPostCode,[fDivision]=@fDivision,[fCountry]=@fCountry,[fMobile]=@fMobile,[fTel]=@fTel,[fFax]=@fFax,[fEmail]=@fEmail,[fNationality]=@fNationality,[fNID]=@fNID,[fTIN]=@fTIN,[fSex]=@fSex,[fResidency]=@fResidency,[jTitle]=@jTitle,[jFirstName]=@jFirstName,[jLastName]=@jLastName,[jOccupation]=@jOccupation,[jDoB]=@jDoB,[jFName]=@jFName,[jMName]=@jMName,[jAddress]=@jAddress,[jCity]=@jCity,[jPostCode]=@jPostCode,[jDivision]=@jDivision,[jCountry]=@jCountry,[jMobile]=@jMobile,[jTel]=@jTel,[jFax]=@jFax,[jEmail]=@jEmail,[jNID]=@jNID,[DesireBranch]=@DesireBranch,IsDirector=@IsDirector,[DirectorShare]=@DirectorShare,fIsComplete=@fIsComplete WHERE [TRACKINGNO]=@id";
+            string query = "UPDATE T_ONLINE_BO_AccountHolder SET [fFirstName]=@fFirstName, [fLastName]=@fLastName, [fDoB]=@fDoB, [fSex]=@fSex, [fFName]=@fFName,[fMName]=@fMName,[fSpouseName]=@fSpouseName,[fOccupation]=@fOccupation,[fNID]=@fNID WHERE [TRACKINGNO]=@id";
             SqlCommand oCommand = new SqlCommand(query, oConnection);
             oCommand.Parameters.AddWithValue("@id", bomodel.TRACKINGNO.ToString());
 
@@ -421,140 +627,134 @@ namespace RoyalCapital_3.Models
             try
             {
 
-                //if (bomodel.TRACKINGNO == null) bomodel.TRACKINGNO = 0;
-                if (bomodel.ToC == null) bomodel.ToC = "";
+       
                 if (bomodel.fFirstName == null) bomodel.fFirstName = "";
                 if (bomodel.fLastName == null) bomodel.fLastName = "";
+                if (bomodel.fDoB == null) bomodel.fDoB = "";
                 if (bomodel.fOccupation == null) bomodel.fOccupation = "";
-                if (bomodel.fTitle1 == null) bomodel.fTitle1 = "";
-                //if (bomodel.n1DoB == null) bomodel.n1DoB = "";
                 if (bomodel.fFName == null) bomodel.fFName = "";
                 if (bomodel.fMName == null) bomodel.fMName = "";
-                if (bomodel.fAddress == null) bomodel.fAddress = "";
-                if (bomodel.fCity == null) bomodel.fCity = "";
-                if (bomodel.fPostCode == null) bomodel.fPostCode = "";
-                if (bomodel.fDivision == null) bomodel.fDivision = "";
-                if (bomodel.fCountry == null) bomodel.fCountry = "";
-                if (bomodel.fMobile == null) bomodel.fMobile = "";
-                if (bomodel.fTel == null) bomodel.fTel = "";
-                if (bomodel.fFax == null) bomodel.fFax = "";
-                if (bomodel.fEmail == null) bomodel.fEmail = "";
-                if (bomodel.fNationality == null) bomodel.fNationality = "";
                 if (bomodel.fNID == null) bomodel.fNID = "";
-                if (bomodel.fTIN == null) bomodel.fTIN = "";
                 if (bomodel.fSex == null) bomodel.fSex = "";
-                if (bomodel.fResidency == null) bomodel.fResidency = "";
-                if (bomodel.jFastName == null) bomodel.jFastName = "";
-                if (bomodel.jLastName == null) bomodel.jLastName = "";
-                if (bomodel.jOccupation == null) bomodel.jOccupation = "";
-                if (bomodel.jTitle1 == null) bomodel.jTitle1 = "";
-                //if (bomodel.n1DoB == null) bomodel.n1DoB = "";
-                if (bomodel.jFName == null) bomodel.jFName = "";
-                if (bomodel.jMName == null) bomodel.jMName = "";
-                if (bomodel.jAddress == null) bomodel.jAddress = "";
-                if (bomodel.jCity == null) bomodel.jCity = "";
-                if (bomodel.jPostCode == null) bomodel.jPostCode = "";
-                if (bomodel.jDivision == null) bomodel.jDivision = "";
-                if (bomodel.jCountry == null) bomodel.jCountry = "";
-                if (bomodel.jMobile == null) bomodel.jMobile = "";
-                if (bomodel.jTel == null) bomodel.jTel = "";
-                if (bomodel.jFax == null) bomodel.jFax = "";
-                if (bomodel.jEmail == null) bomodel.jEmail = "";
-                if (bomodel.jNID == null) bomodel.jNID = "";
-                if (bomodel.IsDirector == null) bomodel.IsDirector = "";
-                if (bomodel.DirectorShare == null) bomodel.DirectorShare = "";
+                if (bomodel.fSpouseName == null) bomodel.fSpouseName = "";
 
 
-
-                //oCommand.Parameters.AddWithValue("@TRACKINGNO", Convert.ToInt32(HttpContext.Current.Session["trackingno"].ToString()));
-                oCommand.Parameters.AddWithValue("@ToC", bomodel.ToC);
                 oCommand.Parameters.AddWithValue("@fFirstName", bomodel.fFirstName);
                 oCommand.Parameters.AddWithValue("@fLastName", bomodel.fLastName);
                 oCommand.Parameters.AddWithValue("@fOccupation", bomodel.fOccupation);
                 if (bomodel.fDoB == null) bomodel.fDoB = Convert.ToDateTime("1/1/1900").ToString();
-                oCommand.Parameters.AddWithValue("@fDoB", DateTime.ParseExact(bomodel.fDoB, "dd/MM/yyyy", null) );
-                oCommand.Parameters.AddWithValue("@fTitle", bomodel.fTitle1);
+                if (bomodel.DesireBranch == null) bomodel.DesireBranch = "";
+                oCommand.Parameters.AddWithValue("@fDoB", DateTime.ParseExact(bomodel.fDoB, "dd/MM/yyyy", null));
                 oCommand.Parameters.AddWithValue("@fFName", bomodel.fFName);
                 oCommand.Parameters.AddWithValue("@fMName", bomodel.fMName);
-                oCommand.Parameters.AddWithValue("@fAddress", bomodel.fAddress);
-                oCommand.Parameters.AddWithValue("@fCity", bomodel.fCity);
-                oCommand.Parameters.AddWithValue("@fPostCode", bomodel.fPostCode);
-                oCommand.Parameters.AddWithValue("@fDivision", bomodel.fDivision);
-                oCommand.Parameters.AddWithValue("@fCountry", bomodel.fCountry);
-                oCommand.Parameters.AddWithValue("@fMobile", bomodel.fMobile);
-                oCommand.Parameters.AddWithValue("@fTel", bomodel.fTel);
-                oCommand.Parameters.AddWithValue("@fFax", bomodel.fFax);
-                oCommand.Parameters.AddWithValue("@fEmail", bomodel.fEmail);
-                oCommand.Parameters.AddWithValue("@fNationality", bomodel.fNationality);
                 oCommand.Parameters.AddWithValue("@fNID", bomodel.fNID);
-                oCommand.Parameters.AddWithValue("@fTIN", bomodel.fTIN);
-                oCommand.Parameters.AddWithValue("@fSex", bomodel.fSex);
-                oCommand.Parameters.AddWithValue("@fResidency", bomodel.fResidency);
-                oCommand.Parameters.AddWithValue("@jTitle", bomodel.jTitle1);
-                oCommand.Parameters.AddWithValue("@jFirstName", bomodel.jFastName);
-                oCommand.Parameters.AddWithValue("@jLastName", bomodel.jLastName);
-                oCommand.Parameters.AddWithValue("@jOccupation", bomodel.jOccupation);
-                if (bomodel.jDoB == null) bomodel.jDoB = Convert.ToDateTime("1/1/1900");
-                oCommand.Parameters.AddWithValue("@jDoB", bomodel.jDoB);
-                oCommand.Parameters.AddWithValue("@jFName", bomodel.jFName);
-                oCommand.Parameters.AddWithValue("@jMName", bomodel.jMName);
-                oCommand.Parameters.AddWithValue("@jAddress", bomodel.jAddress);
-                oCommand.Parameters.AddWithValue("@jCity", bomodel.jCity);
-                oCommand.Parameters.AddWithValue("@jPostCode", bomodel.jPostCode);
-                oCommand.Parameters.AddWithValue("@jDivision", bomodel.jDivision);
-                oCommand.Parameters.AddWithValue("@jCountry", bomodel.jCountry);
-                oCommand.Parameters.AddWithValue("@jMobile", bomodel.jMobile);
-                oCommand.Parameters.AddWithValue("@jTel", bomodel.jTel);
-                oCommand.Parameters.AddWithValue("@jFax", bomodel.jFax);
-                oCommand.Parameters.AddWithValue("@jEmail", bomodel.jEmail);
-                oCommand.Parameters.AddWithValue("@jNID", bomodel.jNID);
-                oCommand.Parameters.AddWithValue("@DesireBranch", bomodel.DesireBranch1);
-                oCommand.Parameters.AddWithValue("@IsDirector", bomodel.IsDirector);
-                oCommand.Parameters.AddWithValue("@DirectorShare", bomodel.DirectorShare);
-                oCommand.Parameters.AddWithValue("@fIsComplete", 1);
-
+                oCommand.Parameters.AddWithValue("@fSex", bomodel.fSex);               
+                oCommand.Parameters.AddWithValue("@fSpouseName", bomodel.fSpouseName);
 
                 oConnection.Open();
                 i = oCommand.ExecuteNonQuery();
                 oConnection.Close();
 
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            if (i >= 1)
+            {         
+                return true;
+            }
+
+            else
+                return false;
+
+        }
+
+        public bool AddSecondAccHolder(BoSecondAccHolderModel bomodel)
+        {
+            int i = 0;
+            SqlConnection oConnection = new SqlConnection(SqlConn);
+
+            string query = "UPDATE T_ONLINE_BO_AccountHolder SET [jFirstName]=@jFirstName,[jLastName]=@jLastName,[jDoB]=@jDoB,[jNID]=@jNID,[jSex]=@jSex  WHERE [TRACKINGNO]=@id";
+            SqlCommand oCommand = new SqlCommand(query, oConnection);
+            oCommand.Parameters.AddWithValue("@id", bomodel.TRACKINGNO.ToString());
 
 
+            try
+            {    
+                if (bomodel.jFastName == null) bomodel.jFastName = "";
+                if (bomodel.jLastName == null) bomodel.jLastName = "";             
+                if (bomodel.jNID == null) bomodel.jNID = "";
+                if (bomodel.jSex == null) bomodel.jSex = "";
 
-			}
+                oCommand.Parameters.AddWithValue("@jFirstName", bomodel.jFastName);
+                oCommand.Parameters.AddWithValue("@jLastName", bomodel.jLastName);
+                if (bomodel.jDoB == null) bomodel.jDoB = Convert.ToDateTime("1/1/1900").ToString();
+                oCommand.Parameters.AddWithValue("@jDoB", DateTime.ParseExact(bomodel.jDoB, "dd/MM/yyyy", null));
+                oCommand.Parameters.AddWithValue("@jNID", bomodel.jNID);
+                oCommand.Parameters.AddWithValue("@jSex", bomodel.jSex);
+
+                oConnection.Open();
+                i = oCommand.ExecuteNonQuery();
+                oConnection.Close();
+
+            }
             catch (Exception ex)
             {
                 return false;
             }
             if (i >= 1)
             {
-				try
-				{
-					if (bomodel.RefarralCode == null || bomodel.RefarralCode == "" || bomodel.RefarralCode == "0")
-					{
-						bomodel.RefarralCode = "0";
-					}
-					//string SqlConn2 = configur.ConnectionStrings["RCLWEB"].ToString();
-					SqlConnection oConnection2 = new SqlConnection(SqlConn);
+                
 
-					string query2 = "UPDATE T_ONLINE_BO_REG SET RefarralCode='" + bomodel.RefarralCode + "' Where TRACKINGNO='" + bomodel.TRACKINGNO + "'";
+                return true;
+            }
 
-					SqlCommand oCommand2 = new SqlCommand(query2, oConnection2);
-					oConnection2.Open();
+            else
+                return false;
 
-					oCommand2.ExecuteNonQuery();
+        }
 
-					oConnection2.Close();
+        public bool AddAccHolderAddress(BoSecondAccHolderAddressModel bomodel)
+        {
+            int i = 0;
+            SqlConnection oConnection = new SqlConnection(SqlConn);
 
-				}
-				catch (Exception ex)
-				{
-					return false;
-				}
+            string query = "UPDATE T_ONLINE_BO_AccountHolder SET [fAddress]=@fAddress,[fPostCode]=@fPostCode,[fCity]=@fCity,[fDivision]=@fDivision,[fCountry]=@fCountry WHERE [TRACKINGNO]=@id";
+            SqlCommand oCommand = new SqlCommand(query, oConnection);
+            oCommand.Parameters.AddWithValue("@id", bomodel.TRACKINGNO.ToString());
 
-				return true;
-			}
-               
+
+            try
+            {
+                if (bomodel.fAddress == null) bomodel.fAddress = "";
+                if (bomodel.fPostCode == null) bomodel.fPostCode = "";
+                if (bomodel.fCity == null) bomodel.fCity = "";
+                if (bomodel.fDivision == null) bomodel.fDivision = "";
+                if (bomodel.fCountry == null) bomodel.fCountry = "";
+
+                oCommand.Parameters.AddWithValue("@fAddress", bomodel.fAddress);
+                oCommand.Parameters.AddWithValue("@fPostCode", bomodel.fPostCode);
+                oCommand.Parameters.AddWithValue("@fCity", bomodel.fCity);
+                oCommand.Parameters.AddWithValue("@fDivision", bomodel.fDivision);
+                oCommand.Parameters.AddWithValue("@fCountry", bomodel.fCountry);
+
+                oConnection.Open();
+                i = oCommand.ExecuteNonQuery();
+                oConnection.Close();
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            if (i >= 1)
+            {
+
+
+                return true;
+            }
+
             else
                 return false;
 

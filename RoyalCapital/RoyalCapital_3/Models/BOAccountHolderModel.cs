@@ -30,7 +30,7 @@ namespace RoyalCapital_3.Models
         public string fOccupation { get; set; }
 
         public string fDoB { get; set; }
-
+        public string fSpouseName { get; set; }
         public string fTitle { get; set; }
         public string fTitle1 { get; set; }
 
@@ -110,5 +110,25 @@ namespace RoyalCapital_3.Models
         public string DirectorShare { get; set; }
 
 
+    }
+
+    public class BoSecondAccHolderModel
+    {
+        public string TRACKINGNO { get; set; }
+        public string jFastName { get; set; }
+        public string jLastName { get; set; }
+        public string jNID { get; set; }
+        public string jDoB { get; set; }
+        public string jSex { get; set; }
+    }
+
+    public class BoSecondAccHolderAddressModel
+    {
+        public string TRACKINGNO { get; set; }
+        public string fAddress { get; set; }
+        public string fCity { get; set; }
+        public string fPostCode { get; set; }
+        public string fDivision { get; set; }
+        public string fCountry { get; set; }
     }
 }

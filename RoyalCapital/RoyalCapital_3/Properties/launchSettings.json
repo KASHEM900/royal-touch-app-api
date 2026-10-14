@@ -5,9 +5,10 @@
       "launchBrowser": true,
       "launchUrl": "api/hello",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5000"
+      //"applicationUrl": "http://localhost:5000"
+      "applicationUrl": "http://0.0.0.0:5000"
     },
     "IIS Express": {
       "commandName": "IISExpress",

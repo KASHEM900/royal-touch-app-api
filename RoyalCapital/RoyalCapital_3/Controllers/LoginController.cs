@@ -34,6 +34,7 @@ namespace RoyalCapital_3.Controllers
             //string sisConn = configuration.GetConnectionString("SISROYALU");
             string rclConn = configuration.GetConnectionString("RCLWEB");
             string key = configuration["secret"];
+            string apiVersion = configuration["APIVersion"];
             string password = "";
             string lock_data = "0";
             string flag_data = "0";
@@ -49,9 +50,9 @@ namespace RoyalCapital_3.Controllers
                 DataTable oTable = new DataTable();
                 oTable.Load(oCommand.ExecuteReader(CommandBehavior.CloseConnection));
 
-                if(oTable.Rows.Count == 0)
+                if (oTable.Rows.Count == 0)
                 {
-                    return NotFound(new{ error = "Invalid Credentials"});
+                    return NotFound(new { error = "Invalid Credentials" });
                 }
 
                 foreach (DataRow dr in oTable.Rows)
@@ -84,6 +85,8 @@ namespace RoyalCapital_3.Controllers
             {
                 return NotFound(ex.ToString());
             }
+
+
         }
     }
 }

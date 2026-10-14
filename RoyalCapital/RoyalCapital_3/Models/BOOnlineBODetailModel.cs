@@ -26,6 +26,7 @@ namespace RoyalCapital_3.Models
         public string fFirstName { get; set; }
 
         public string fLastName { get; set; }
+        public string fSpouseName { get; set; }
 
         public string fOccupation { get; set; }
 
@@ -76,7 +77,7 @@ namespace RoyalCapital_3.Models
 
         public string jOccupation { get; set; }
 
-        public Nullable<System.DateTime> jDoB { get; set; }
+        public string jDoB { get; set; }
 
         public string jFName { get; set; }
 
@@ -282,5 +283,13 @@ namespace RoyalCapital_3.Models
         public string bkash_result { get; set; }
         public string bkash_data { get; set; }
 
+    }
+
+    public class BOAccountHolderBranchTypeAC
+    {
+        public string TRACKINGNO { get; set; }
+        public string ToC { get; set; }
+        public string DesireBranch { get; set; }
+        public string RefarralCode { get; set; }
     }
 }
