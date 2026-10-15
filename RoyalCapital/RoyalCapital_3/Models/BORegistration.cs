@@ -10,11 +10,10 @@ namespace RoyalCapital_3.Models
     {
         public string TrackingNo { get; set; }
 
-        //[Required(ErrorMessage = "First Name is required.")]
         [Display(Name = "First Name *")]
         public string FirstName { get; set; }
 
-        //[Required(ErrorMessage = "Last Name is required.")]
+
         [Display(Name = "Last Name *")]
         public string LastName { get; set; }
 
@@ -28,12 +27,13 @@ namespace RoyalCapital_3.Models
         [RegularExpression(@"^(\+88)?01[0-9]{9}$", ErrorMessage = "Enter a valid Bangladeshi mobile number.")]
         public string Mobile { get; set; }
 
-        //[Required(ErrorMessage = "Password is required.")]
-        //[StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
+
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         public string PromoCode { get; set; }
+
+        public string Register { get; set; }
     }
 
 }

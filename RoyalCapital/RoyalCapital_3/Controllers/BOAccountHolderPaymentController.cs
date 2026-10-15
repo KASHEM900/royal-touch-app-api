@@ -647,5 +647,111 @@ namespace RoyalCapital_3.Controllers
 
 
         // End of SSL Commerz payment gateway
+
+        // For BINI
+
+        [HttpPost("BiniPaymentDetails")]
+        public IActionResult BiniPaymentDetails([FromForm] BiniPaymentDetailsModel response)
+        {
+            if (response == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Invalid payment details"
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(response.TrackingNo) || string.IsNullOrWhiteSpace(response.TrxID) || response.Amount <= 0)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "TrackingNo, TrxID and valid Amount are required"
+                });
+            }
+
+            var model = new BiniPaymentDetailsModel
+            {
+                TrackingNo = response.TrackingNo,
+                PaymentId = response.PaymentId,
+                TrxID = response.TrxID,
+                Amount = response.Amount,
+                CreateDate = response.CreateDate == default ? DateTime.Now: response.CreateDate,
+                Status = "success",
+                Source = "BINI"
+            };
+
+            const string query = @"INSERT INTO dbo.T_ONLINE_PAYMENT_RECEIVER (tracking_no, payment_id, trxID, amount, create_date, status, source)
+                                   VALUES (@tracking_no, @payment_id, @trxID, @amount, @create_date, @status, @source);";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlConn))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add("@tracking_no", SqlDbType.NVarChar, 100).Value = (object?)model.TrackingNo ?? DBNull.Value;
+
+                    command.Parameters.Add("@payment_id", SqlDbType.NVarChar, 100).Value = (object?)model.PaymentId ?? DBNull.Value;
+
+                    command.Parameters.Add("@trxID", SqlDbType.NVarChar, 100).Value = (object?)model.TrxID ?? DBNull.Value;
+
+                    var amountParameter = command.Parameters.Add("@amount", SqlDbType.Decimal);
+
+                    amountParameter.Precision = 18;
+                    amountParameter.Scale = 2;
+                    amountParameter.Value = model.Amount;
+
+                    command.Parameters.Add("@create_date", SqlDbType.DateTime).Value = model.CreateDate;
+
+                    command.Parameters.Add("@status", SqlDbType.NVarChar, 20).Value = model.Status;
+
+                    command.Parameters.Add("@source", SqlDbType.NVarChar, 50).Value = model.Source;
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Payment details saved successfully",
+                    tracking_no = model.TrackingNo,
+                    transaction_id = model.TrxID,
+                    bank_transaction_id = model.PaymentId,
+                    amount = model.Amount,
+                    date = model.CreateDate,
+                    status = model.Status,
+                    source = model.Source
+                });
+            }
+            catch (SqlException)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Unable to save payment details"
+                });
+            }
+        }
+
+
+        public class BiniPaymentDetailsModel
+        {
+            public string? TrackingNo { get; set; }
+
+            public string? PaymentId { get; set; }
+
+            public string? TrxID { get; set; }
+
+            public decimal Amount { get; set; }
+
+            public DateTime CreateDate { get; set; }
+
+            public string Status { get; set; }
+
+            public string Source { get; set; }
+        }
+
     }
 }

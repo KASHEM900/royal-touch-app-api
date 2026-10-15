@@ -88,7 +88,6 @@ namespace RoyalCapital_3.Controllers
                         {
                             From = new MailAddress("bo@royalcapitalbd.com", "Royal Capital Online BO Opening"),
                             Subject = "Royal Capital-Online BO Account Registration",
-                            //Body = $"Dear Concern!\n\nGood day from Royal Capital Ltd.\r\nThanks for signing up with our online BO opening portal\n\n1.Access to our portal http://bo.royalcapitalbd.com/Home/Login\n2.Put in your ID and Password in the “Sign in” area\n\nUser ID: {bomodel.TrackingNo}\nPassword: {bomodel.Password}\n\nFor more information, call at 16379 or 09606016379\n\nThanks for being with us.,\nRoyal Capital Ltd."
 
                          
                     Body = $"Dear Concern!\n\n" +
@@ -151,7 +150,7 @@ namespace RoyalCapital_3.Controllers
                 using (SqlConnection conn = new SqlConnection(_connStr))
                 {
                     string query = @"INSERT INTO T_ONLINE_BO_REG(TRACKINGNO, FIRSTNAME, LASTNAME, EMAIL, MOBILE, PASS, USERID, pDATE, IsActive, IsApp1, IsApp2,REGISTER)
-                                VALUES(@trackingno, @FIRSTNAME, @LASTNAME, @EMAIL, @MOBILE, @PASS, @USERID, GETDATE(), 1, 0, 0,'APP');
+                                VALUES(@trackingno, @FIRSTNAME, @LASTNAME, @EMAIL, @MOBILE, @PASS, @USERID, GETDATE(), 1, 0, 0,@Register);
                                 INSERT INTO T_ONLINE_BO_AccountHolder(TRACKINGNO, fFirstName, fLastName, fMobile, fEmail)
                                 VALUES(@trackingno, @FIRSTNAME, @LASTNAME, @MOBILE, @EMAIL);
                                 INSERT INTO T_ONLINE_BO_AccHolderBANK(TRACKINGNO) VALUES(@trackingno);
@@ -167,6 +166,7 @@ namespace RoyalCapital_3.Controllers
                     cmd.Parameters.AddWithValue("@MOBILE", bomodel.Mobile);
                     cmd.Parameters.AddWithValue("@PASS", bomodel.Password);
                     cmd.Parameters.AddWithValue("@USERID", bomodel.TrackingNo);
+                    cmd.Parameters.AddWithValue("@Register", bomodel.Register == "BINI" ? "BINI" : "APP");
 
                     conn.Open();
                     int rows = cmd.ExecuteNonQuery();
