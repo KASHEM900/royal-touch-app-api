@@ -295,7 +295,7 @@ namespace RoyalCapital_3.Controllers
 
                     oConnection.Close();
 
-                    transactionStatus = "Transaction Submitted...";
+                    transactionStatus = "Transaction Submitted Successfully!";
 
                     return Ok(transactionStatus);
 
@@ -308,21 +308,21 @@ namespace RoyalCapital_3.Controllers
             else if(eft_posting_check(aCode, ledger, matured, amount) == 5)
             {
                 return Ok(new { 
-                    message = "Amount too low."
+                    message = "Insufficient Amount for EFT Requisition."
                 });
             }
             else if (eft_posting_check(aCode, ledger, matured, amount) == 2)
             {
                 return Ok(new
                 {
-                    message = "You have unprocessed EFT application(s)."
+                    message = "You already have a pending EFT application to process."
                 });
             }
             else
             {
                 return Ok(new
                 {
-                    message = "You do not have sufficient balance for EFT requisition."
+                    message = "Insufficient Amount for EFT Requisition."
                 });
             }
 

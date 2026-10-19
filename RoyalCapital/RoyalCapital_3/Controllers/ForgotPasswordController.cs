@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Net;
-using System.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using RoyalCapitalBE.Models;
-using RoyalCapital_3.Models;
-using System.Globalization;
-
-using System.Text;
-
+using Newtonsoft.Json.Linq;
 using RoyalCapital_3.BL;
+using RoyalCapital_3.Models;
+using RoyalCapitalBE.Models;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RoyalCapital_3.Controllers
 {
@@ -109,12 +108,14 @@ namespace RoyalCapital_3.Controllers
                 {
                     return NotFound(new
                     {
+                        success = false,
                         message = ex.ToString()
                     });
                 }
 
                 return Ok(new
                 {
+                    success = true,
                     message = "Password Updated"
                 });
             }
@@ -134,12 +135,14 @@ namespace RoyalCapital_3.Controllers
                 {
                     return NotFound(new
                     {
+                        success = false,
                         message = ex.ToString()
                     });
                 }
 
                 return NotFound(new
                 {
+                    success = false,
                     message = "Password Update failed. Try again"
                 });
             }
@@ -189,11 +192,25 @@ namespace RoyalCapital_3.Controllers
             {
                 using (var wb = new WebClient())
                 {
+
                     response = wb.DownloadString(url);
-                    if (response == "\"Seccess\"")
+                    JToken token = JToken.Parse(response);
+
+                    if (token.Type == JTokenType.String)
+                    {
+                        token = JToken.Parse(token.Value<string>());
+                    }
+
+                    if (token.Type == JTokenType.Object && (int?)token["api_response_code"] == 200 && (string)token["api_response_message"] == "SUCCESS")
                     {
                         response = verification_code;
                     }
+
+                    //response = wb.DownloadString(url);
+                    //if (response == "\"Seccess\"")
+                    //{
+                    //    response = verification_code;
+                    //}
                 }
             }
             catch (Exception ex)
