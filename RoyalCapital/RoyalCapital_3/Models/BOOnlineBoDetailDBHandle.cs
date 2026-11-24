@@ -130,6 +130,128 @@ namespace RoyalCapital_3.Models
             return acc.ToList();
         }
 
+
+        // **************** BINI START *********************
+
+        public IEnumerable<BINIBOAccountHolder> BINIAccHolderSelect(string id)
+        {
+            var acc = new List<BINIBOAccountHolder>();
+
+            SqlConnection oConnection = new SqlConnection(SqlConn);
+            oConnection.Open();
+
+            string query = "SELECT [dbo].[T_ONLINE_BO_AccountHolder].[TRACKINGNO],[RCODE],[ToC],[fFirstName],[fLastName],[fOccupation],[fDoB],[fTitle],[fFName],[fMName],[fAddress],[fCity],[fPostCode],[fDivision],[fCountry],[fMobile],[fTel],[fFax],[fEmail],[fNationality],[fNID],[fTIN],[fSex],[fResidency],[jTitle],[jFirstName],[jLastName],[jOccupation],[jDoB],[jFName],[jMName],[jAddress],[jCity],[jPostCode],[jDivision],[jCountry],[jMobile],[jTel],[jFax],[jEmail],[jNID],[DesireBranch],[IsDirector],[DirectorShare],[T_ONLINE_BO_REG].[pDate],[fIsComplete],[T_ONLINE_BO_REG].[RefarralCode],[fSpouseName] FROM [dbo].[T_ONLINE_BO_AccountHolder],[dbo].[T_ONLINE_BO_REG] WHERE [dbo].[T_ONLINE_BO_AccountHolder].TRACKINGNO=[dbo].[T_ONLINE_BO_REG].TRACKINGNO AND [dbo].[T_ONLINE_BO_AccountHolder].TRACKINGNO=@id";
+            SqlCommand oCommand = new SqlCommand(query, oConnection);
+            oCommand.Parameters.AddWithValue("@id", id);
+
+            DataTable oTable = new DataTable();
+            oTable.Load(oCommand.ExecuteReader(CommandBehavior.CloseConnection));
+
+            foreach (DataRow dr in oTable.Rows)
+            {
+
+                acc.Add(new BINIBOAccountHolder
+                {
+                    RCODE = dr["RCODE"].ToString(),
+                    fFirstName = dr["fFirstName"].ToString(),
+                    fLastName = dr["fLastName"].ToString(),
+                    fOccupation = dr["fOccupation"].ToString(),
+                    fSpouseName = dr["fSpouseName"].ToString(),
+                    fDoB = (dr["fDoB"] == DBNull.Value ? Convert.ToDateTime("1/1/1900").ToString("dd/MM/yyyy") : Convert.ToDateTime(dr["fDoB"]).ToString("dd/MM/yyyy")),
+ 
+                    fFName = dr["fFName"].ToString(),
+                    fMName = dr["fMName"].ToString(),
+
+                    fAddress = dr["fAddress"].ToString(),
+                    fCity = dr["fCity"].ToString(),
+                    fPostCode = dr["fPostCode"].ToString(),
+                    fDivision = dr["fDivision"].ToString(),
+                    fCountry = dr["fCountry"].ToString(),
+                    fNationality = dr["fNationality"].ToString(),
+                    fNID = dr["fNID"].ToString(),
+                    fTIN = dr["fTIN"].ToString(),
+                    fSex = dr["fSex"].ToString(),
+
+                    fMobile = dr["fMobile"].ToString(),
+                    fEmail = dr["fEmail"].ToString(),
+
+                    jFastName = dr["jFirstName"].ToString(),
+                    jLastName = dr["jLastName"].ToString(),
+                    jOccupation = dr["jOccupation"].ToString(),
+                    jDoB = (dr["jDoB"] == DBNull.Value ? Convert.ToDateTime("1/1/1900").ToString("dd/MM/yyyy") : Convert.ToDateTime(dr["fDoB"]).ToString("dd/MM/yyyy")),
+                    jFName = dr["jFName"].ToString(),
+                    jMName = dr["jMName"].ToString(),
+                    jAddress = dr["jAddress"].ToString(),
+                    jCity = dr["jCity"].ToString(),
+                    jPostCode = dr["jPostCode"].ToString(),
+                    jDivision = dr["jDivision"].ToString(),
+                    jCountry = dr["jCountry"].ToString(),
+                    jMobile = dr["jMobile"].ToString(),
+                    jEmail = dr["jEmail"].ToString(),
+                    jNID = dr["jNID"].ToString(),
+
+                });
+            }
+            return acc.ToList();
+        }
+
+
+        public IEnumerable<BINIBOAccountHolderBankInfo> BINIAccBankInfo(string id)
+        {
+            var acc = new List<BINIBOAccountHolderBankInfo>();
+
+            SqlConnection oConnection = new SqlConnection(SqlConn);
+            oConnection.Open();
+
+
+            string query = "SELECT [TRACKINGNO],[BANKNAME],[BANKBRANCH],[DISTRICT],[ROUTING],[AC],[pDate],[bIsComplete] FROM [dbo].[T_ONLINE_BO_AccHolderBANK] WHERE TRACKINGNO=@id";
+
+            SqlCommand oCommand = new SqlCommand(query, oConnection);
+            oCommand.Parameters.AddWithValue("@id", id);
+
+            DataTable oTable = new DataTable();
+            oTable.Load(oCommand.ExecuteReader(CommandBehavior.CloseConnection));
+
+            foreach (DataRow dr in oTable.Rows)
+            {
+
+                acc.Add(new BINIBOAccountHolderBankInfo { BankName = dr["BANKNAME"].ToString(), BranchName = dr["BANKBRANCH"].ToString(), BankDistrict = dr["DISTRICT"].ToString(), Routing = dr["ROUTING"].ToString(), AccountNumber = dr["AC"].ToString() });
+            }
+            return acc.ToList();
+        }
+
+        public IEnumerable<BINIBOAccountHolderBranchTypeAC> BINIAccBranchInfo(string id)
+        {
+            var acc = new List<BINIBOAccountHolderBranchTypeAC>();
+
+            SqlConnection oConnection = new SqlConnection(SqlConn);
+            oConnection.Open();
+
+
+            string query = @"SELECT A.[DesireBranch], A.[ToC], R.[RefarralCode] FROM dbo.T_ONLINE_BO_AccountHolder A INNER JOIN dbo.T_ONLINE_BO_REG R
+                    ON A.[TRACKINGNO] = R.[TRACKINGNO] WHERE A.[TRACKINGNO] = @id";
+
+            SqlCommand oCommand = new SqlCommand(query, oConnection);
+            oCommand.Parameters.AddWithValue("@id", id);
+
+            DataTable oTable = new DataTable();
+            oTable.Load(oCommand.ExecuteReader(CommandBehavior.CloseConnection));
+
+            foreach (DataRow dr in oTable.Rows)
+            {
+
+                acc.Add(new BINIBOAccountHolderBranchTypeAC
+                {
+                    DesireBranch = dr["DesireBranch"].ToString(),
+                    ToC = dr["ToC"].ToString(),
+                    RefarralCode = dr["RefarralCode"].ToString()
+                });
+            }
+            return acc.ToList();
+        }
+
+
+        // **************** BINI END *********************
         public IEnumerable<BOOnlineBODetailModel> AccAuInfo(string id)
         {
             var acc = new List<BOOnlineBODetailModel>();
@@ -296,6 +418,37 @@ namespace RoyalCapital_3.Models
                 bank.Add(new BOBankInfoModel { BANKNAME = dr["BANKNAME"].ToString() });
             }
             return bank.ToList();
+        }
+
+        public IEnumerable<BINIBOBankInfoModel> binibankNameInfo()
+        {
+            var bank = new List<BINIBOBankInfoModel>();
+
+            string query = @"SELECT DISTINCT BANKNAME, BRANCH, DISTRICT, ROUTING FROM T_BANKINFO";
+
+            using (SqlConnection oConnection = new SqlConnection(SqlConn))
+            {
+                using (SqlCommand oCommand = new SqlCommand(query, oConnection))
+                {
+                    oConnection.Open();
+
+                    using (SqlDataReader reader = oCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            bank.Add(new BINIBOBankInfoModel
+                            {
+                                BANKNAME = reader["BANKNAME"]?.ToString(),
+                                BANKBRANCH = reader["BRANCH"]?.ToString(),
+                                BANKDISTRICT = reader["DISTRICT"]?.ToString(),
+                                BANKROUTING = reader["ROUTING"]?.ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return bank;
         }
 
         public IEnumerable<BOBranchInfo> branchInfo()

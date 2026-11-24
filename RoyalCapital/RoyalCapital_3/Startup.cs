@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RoyalCapital_3.Data;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace RoyalCapital_3
 {
@@ -22,6 +24,32 @@ namespace RoyalCapital_3
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // For Token Starting
+            services.AddAuthentication( Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters =
+                new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            Configuration["Jwt:Key"]
+                        )
+                    ),
+
+                    ClockSkew = System.TimeSpan.Zero
+                };
+            });
+
+            services.AddAuthorization();
             services.AddControllers();
 
             services.AddMemoryCache();
@@ -58,6 +86,7 @@ namespace RoyalCapital_3
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

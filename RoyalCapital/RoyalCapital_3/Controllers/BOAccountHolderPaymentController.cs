@@ -556,7 +556,7 @@ namespace RoyalCapital_3.Controllers
             string response = "failed";
 
             string url = "https://sms.royalcapitalbd.com/api/sendSMS?apikey=AMEYO02G7ZZX&mobile=" +
-                mobileNo + "&text=" + "Your Mobile Verification Code For Online BO Opening : " + verification_code + " \nFor query: 09606555333";
+                mobileNo + "&text=" + "Your Mobile Verification Code For Online BO Opening : " + verification_code + " \nFor query: 09606016379";
 
             try
             {

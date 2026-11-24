@@ -295,9 +295,13 @@ namespace RoyalCapital_3.Controllers
 
                     oConnection.Close();
 
-                    transactionStatus = "Transaction Submitted Successfully!";
+                    //transactionStatus = "Transaction Submitted Successfully!";
 
-                    return Ok(transactionStatus);
+                    //return Ok(transactionStatus);
+                    return Ok(new
+                    {
+                        message = ""
+                    });
 
                 }
                 catch (Exception ex)
@@ -438,7 +442,7 @@ namespace RoyalCapital_3.Controllers
                     return 2;
                     //GridView2.DataSource = DS.Tables[0];
                     //GridView2.DataBind();
-                    //lblError.Text = "You have " + count + " unprocessed EFT application(s). For any query contact with our helpline: 09606555333";
+                    //lblError.Text = "You have " + count + " unprocessed EFT application(s). For any query contact with our helpline: 09606016379";
                 }
             }
             else

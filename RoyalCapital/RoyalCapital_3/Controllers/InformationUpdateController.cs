@@ -20,13 +20,13 @@ namespace RoyalCapital_3.Controllers
     [ApiController]
     public class InformationUpdateController : ControllerBase
     {
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
         private readonly string SqlConn;
         private readonly IMemoryCache memoryCache;
 
         public InformationUpdateController(IConfiguration config, IMemoryCache memoryCache)
         {
-            configuration = config;
+            _configuration = config;
             SqlConn = config.GetConnectionString("RCLWEB");
             this.memoryCache = memoryCache;
         }
@@ -135,9 +135,9 @@ namespace RoyalCapital_3.Controllers
                 return;
 
             using (MailMessage mail = new MailMessage())
-            using (SmtpClient smtp = new SmtpClient("159.21.2.246"))
+            using (SmtpClient smtp = new SmtpClient(_configuration["Smtp:Host"]))
             {
-                mail.From = new MailAddress("bo@royalcapitalbd.com", displayName);
+                mail.From = new MailAddress(_configuration["Smtp:Username"], displayName);
 
                 mail.To.Add(email);
 
@@ -147,9 +147,9 @@ namespace RoyalCapital_3.Controllers
 
                 mail.IsBodyHtml = false;
 
-                smtp.Port = 25;
+                smtp.Port = Convert.ToInt32(_configuration["Smtp:Port"]);
 
-                smtp.Credentials = new NetworkCredential("bo@royalcapitalbd.com", configuration["EmailSettings:Password"]);
+                smtp.Credentials = new NetworkCredential(_configuration["Smtp:Username"], _configuration["Smtp:Password"]);
 
                 smtp.Send(mail);
             }
@@ -1592,7 +1592,7 @@ namespace RoyalCapital_3.Controllers
                     });
                 }
 
-                string query = $@" SELECT CASE WHEN EXISTS (SELECT 1 FROM dbo.[{tableName}] WHERE ClientCode = @ClientCode) THEN 1 ELSE 0 END;";
+                string query = $@" SELECT CASE WHEN EXISTS (SELECT 1 FROM dbo.[{tableName}] WHERE ClientCode = @ClientCode AND IsApproveCallCenter = 0 AND IsApproveCDBL = 0 AND IsDeleted = 0) THEN 1 ELSE 0 END;";
 
                 //await using var connection = new SqlConnection(connectionString);
 

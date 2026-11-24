@@ -86,7 +86,7 @@ namespace RoyalCapital_3.Controllers
                     {
                         MailMessage mail = new MailMessage
                         {
-                            From = new MailAddress("bo@royalcapitalbd.com", "Royal Capital Online BO Opening"),
+                            From = new MailAddress(_configuration["Smtp:Username"], "Royal Capital Online BO Opening"),
                             Subject = "Royal Capital-Online BO Account Registration",
 
                          
@@ -105,10 +105,11 @@ namespace RoyalCapital_3.Controllers
                         };
                         mail.To.Add(bomodel.Email);
 
-                        SmtpClient smtp = new SmtpClient("159.21.2.246")
+                        SmtpClient smtp = new SmtpClient(_configuration["Smtp:Host"])
                         {
-                            Port = 25,
-                            Credentials = new System.Net.NetworkCredential("bo@royalcapitalbd.com", "rclbd1234%"),
+                            // Port = 25,
+                            Port = Convert.ToInt32(_configuration["Smtp:Port"]),
+                            Credentials = new System.Net.NetworkCredential(_configuration["Smtp:Username"], _configuration["Smtp:Password"]),
                             EnableSsl = false
                         };
                         smtp.Send(mail);
@@ -167,6 +168,39 @@ namespace RoyalCapital_3.Controllers
                     cmd.Parameters.AddWithValue("@PASS", bomodel.Password);
                     cmd.Parameters.AddWithValue("@USERID", bomodel.TrackingNo);
                     cmd.Parameters.AddWithValue("@Register", bomodel.Register == "BINI" ? "BINI" : "APP");
+
+                    conn.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                    return rows > 0;
+                }
+            }
+
+
+            // For BINI
+
+            public bool AddOnlineBoRegBINI(BiniBORegistrationModel bomodel)
+            {
+                using (SqlConnection conn = new SqlConnection(_connStr))
+                {
+                    string query = @"INSERT INTO T_ONLINE_BO_REG(TRACKINGNO, FIRSTNAME, LASTNAME, EMAIL, MOBILE, PASS, USERID, pDATE, IsActive, IsApp1, IsApp2,REGISTER, PasswordHash)
+                                VALUES(@trackingno, @FIRSTNAME, @LASTNAME, @EMAIL, @MOBILE, @PASS, @USERID, GETDATE(), 1, 0, 0,'BINI', @PasswordHash);
+                                INSERT INTO T_ONLINE_BO_AccountHolder(TRACKINGNO, fFirstName, fLastName, fMobile, fEmail)
+                                VALUES(@trackingno, @FIRSTNAME, @LASTNAME, @MOBILE, @EMAIL);
+                                INSERT INTO T_ONLINE_BO_AccHolderBANK(TRACKINGNO) VALUES(@trackingno);
+                                INSERT INTO T_ONLINE_BO_AccHolderAuthorize(TRACKINGNO) VALUES(@trackingno);
+                                INSERT INTO T_ONLINE_BO_AccHolderNominee(TRACKINGNO) VALUES(@trackingno);
+                                INSERT INTO T_ONLINE_BO_AccHolderImages(TRACKINGNO) VALUES(@trackingno);";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@trackingno", bomodel.TrackingNo);
+                    cmd.Parameters.AddWithValue("@FIRSTNAME", bomodel.FirstName);
+                    cmd.Parameters.AddWithValue("@LASTNAME", bomodel.LastName);
+                    cmd.Parameters.AddWithValue("@EMAIL", bomodel.Email);
+                    cmd.Parameters.AddWithValue("@MOBILE", bomodel.Mobile);
+                    cmd.Parameters.AddWithValue("@PASS", bomodel.Password);
+                    cmd.Parameters.AddWithValue("@USERID", bomodel.TrackingNo);
+                   // cmd.Parameters.AddWithValue("@Register", bomodel.Register == "BINI" ? "BINI" : "APP");
+                    cmd.Parameters.AddWithValue("@PasswordHash", bomodel.PasswordHash);
 
                     conn.Open();
                     int rows = cmd.ExecuteNonQuery();

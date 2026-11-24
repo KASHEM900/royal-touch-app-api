@@ -32,4 +32,14 @@ namespace RoyalCapital_3.Models
         public IFormFile FileDef { get; set; }
     }
 
+    public class BINIBOBankInfoModel
+    {
+
+        public string BANKNAME { get; set; }
+        public string BANKDISTRICT { get; set; }
+        public string BANKBRANCH { get; set; }
+        public string BANKROUTING { get; set; }
+     
+    }
+
 }

@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Net;
-using System.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using RoyalCapitalBE.Models;
-using RoyalCapital_3.Models;
-using System.Globalization;
-
-using System.Text;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RoyalCapital_3.BL;
+using RoyalCapital_3.Models;
+using RoyalCapitalBE.Models;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RoyalCapital_3.Controllers
 {
@@ -267,23 +267,33 @@ namespace RoyalCapital_3.Controllers
             string response = "failed";
 
             string url = "https://sms.royalcapitalbd.com/api/sendSMS?apikey=AMEYO02G7ZZX&mobile=" +
-                mobileNo + "&text=" + "RCL Password Set Verification Code : " + verification_code + " \nFor query: 09606555333";
+                mobileNo + "&text=" + "RCL Password Set Verification Code : " + verification_code + " \nFor query: 09606016379";
 
-            try
+
+            using (var wb = new WebClient())
             {
-                using (var wb = new WebClient())
+                response = wb.DownloadString(url);
+
+                try
                 {
-                    response = wb.DownloadString(url);
-                    if (response == "\"Seccess\"")
+                    string jsonString = JsonConvert.DeserializeObject<string>(response);
+
+                    JObject json = JObject.Parse(jsonString);
+
+                    string message = (string)json["api_response_message"];
+                    int code = (int?)json["api_response_code"] ?? 0;
+
+                    if (code == 200 && message == "SUCCESS")
                     {
                         response = verification_code;
                     }
                 }
+                catch (JsonException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    System.Diagnostics.Debug.WriteLine("API Response: " + response);
+                }
             }
-            catch(Exception ex)
-            {
-                response = "failed";
-            }            
             return response;
         }
     }
